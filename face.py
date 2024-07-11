@@ -62,6 +62,7 @@ def detect_user():
         landmarks, _, _ = mtcnn.detect(pil_img, landmarks=True)
         box = 0
         flag = 0
+        matched_name = ""
 
         if imgs is not None:
             imgs = imgs.unsqueeze(0).to(device)
@@ -72,7 +73,8 @@ def detect_user():
                     similarity = torch.dist(feature, data_feature, p=2)
                     print(similarity)
                     if similarity < 0.78:
-                        print("发现匹配人员:", users[index]["name"], similarity)
+                        matched_name = users[index]["name"]
+                        print("发现匹配人员:", matched_name, similarity)
                         current_time = datetime.now()
                         print("发现时间:", current_time.strftime("%Y-%m-%d %H:%M:%S"))
                         frame_box = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
@@ -83,9 +85,9 @@ def detect_user():
                         flag = 1
 
         if flag == 0:
-            yield frame
+            yield frame, matched_name
         else:
-            yield box
+            yield box, matched_name
 
     cap.release()
     cv2.destroyAllWindows()

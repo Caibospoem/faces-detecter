@@ -43,20 +43,21 @@ class Login(FramelessWindow, Main_Window):
     def detect_user_and_display(self):
         def run_detection():
             self.cap = cv2.VideoCapture(0)
-            for frame in detect_user():
+            for frame, matched_name in detect_user():
                 if self.stop_detection.is_set():
                     break
-                self.update_label(frame)
+                self.update_label(frame, matched_name)
 
         threading.Thread(target=run_detection).start()
 
-    def update_label(self, frame):
+    def update_label(self, frame, matched_name):
         rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb_image.shape
         bytes_per_line = ch * w
         q_img = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
         pixmap = QPixmap.fromImage(q_img)
         self.Image_label.setPixmap(pixmap)
+        self.label_3.setText(matched_name)
 
     def closeEvent(self, event):
         self.stop_detection.set()
@@ -136,7 +137,6 @@ class window_1(FramelessWindow, Window_1):
         self.timer.stop()
         self.camera.release()
         super().closeEvent(event)
-
 
 class delete_window(FramelessWindow, Delete_window):
     def __init__(self):
