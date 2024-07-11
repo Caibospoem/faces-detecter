@@ -6,7 +6,7 @@ import os
 import threading
 from PIL import Image
 from PyQt5.QtCore import Qt, QTimer, QDateTime
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap, QImage, QIcon
 from qframelesswindow import FramelessWindow
 from PyQt5.QtWidgets import QApplication, QWidget
 from mainwindow import Main_Window
@@ -189,6 +189,7 @@ if __name__ == "__main__":
     w_1 = window_1()
     w_2 = delete_window()
 
+    m.setWindowIcon(QIcon("./source/javelin.ico"))
     m.show()
 
     app.exec_()
