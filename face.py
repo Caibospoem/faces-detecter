@@ -83,7 +83,14 @@ def detect_user():
                         cv2.rectangle(frame_box, (x1, y1), (x2, y2), (0, 255, 0), 2)
                         box = frame_box
                         flag = 1
-
+                    else:
+                        matched_name = "未知人员"
+                        frame_box = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+                        landmark = landmarks[i]
+                        x1, y1, x2, y2 = landmark[:4].astype(int)
+                        cv2.rectangle(frame_box, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                        box = frame_box
+                        flag = 1
         if flag == 0:
             yield frame, matched_name
         else:

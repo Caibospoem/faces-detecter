@@ -1,4 +1,6 @@
 import sys
+import time
+
 import cv2
 import os
 import threading
@@ -11,6 +13,7 @@ from mainwindow import Main_Window
 from window_1 import Window_1
 from delete_window import Delete_window
 from face import upload_users, detect_user
+from time import sleep
 
 class Login(FramelessWindow, Main_Window):
     def __init__(self):
@@ -22,9 +25,8 @@ class Login(FramelessWindow, Main_Window):
         self.Button1.clicked.connect(self.on_button1_click)
         self.Button4.clicked.connect(self.on_button2_click)
         self.stop_detection = threading.Event()
-        # self.camera = cv2.VideoCapture(0)
-        # self.timer = QTimer()
-        # self.timer.timeout.connect(self.update_frame)
+
+        self.cap = None
 
     def on_button1_click(self):
         self.stop_detection.clear()
@@ -67,11 +69,17 @@ class Login(FramelessWindow, Main_Window):
         event.accept()
 
     def showWindow1(self):
+        if self.cap:
+            self.stopCamera()
+            time.sleep(0.2)
 
         w_1 = window_1()
         w_1.show()
 
     def showWindow2(self):
+        if self.cap:
+            self.stopCamera()
+            time.sleep(0.2)
 
         w_2 = delete_window()
         w_2.show()
@@ -88,7 +96,6 @@ class window_1(FramelessWindow, Window_1):
         self.camera = cv2.VideoCapture(0)
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
-
 
     def Close(self):
         self.close()
